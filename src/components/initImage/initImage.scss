@@ -1,0 +1,30 @@
+:global(.inits){
+        width: 100%;
+        height:100%;
+        position: absolute;
+        top:0;
+        left:0;
+        opacity: 1;
+        transform: scale(1);
+        animation:ani 4s forwards;
+        img{
+            width: 100%;
+            height:100%;
+        }
+    }
+
+@keyframes ani {
+    60%{
+        opacity: 1;
+        transform: scale(1);
+    }
+    99%{
+        opacity: 0;
+        transform: scale(1.5);
+    }
+    100%{
+        opacity: 0;
+        transform: scale(1.5);
+        transform: translateX(-100%)
+    }
+}

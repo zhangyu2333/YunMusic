@@ -1,0 +1,72 @@
+$baseline-px:37.5px;
+@function px2rem ($px-values) {
+    $baseline-rem: $baseline-px / 1rem * 1;
+    $px-values: $px-values / $baseline-rem;
+    @return $px-values;
+}
+.song{
+    display: flex;
+    flex-direction: column;
+}
+.title{
+    width: 100%;
+    height: px2rem(40px);
+    background: rgb(45,45,45);
+    padding:px2rem(5px) px2rem(10px);
+    flex-shrink: 0;
+    display: flex;
+    input{
+        height:100%;
+        background: rgb(109, 108, 108);
+        padding:0 px2rem(15px);
+        line-height: 100%;
+        font-size: px2rem(14px);
+        color:#fff;
+        border:0;
+        border-radius: px2rem(15px);
+        flex:1;
+    }
+    span{
+        width: px2rem(50px);
+        font-size: px2rem(14px);
+        color:#fff;
+        line-height: px2rem(30px);
+        text-align: center;
+    }
+}
+h4{
+    font-size: px2rem(17px);
+    padding: 0 px2rem(10px);
+    line-height: px2rem(40px);
+}
+.hot{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 px2rem(10px);
+    p{
+        padding:px2rem(5px) px2rem(10px);
+        border:1px solid rgb(45,45,45);
+        border-radius: px2rem(13px);
+        margin-right: px2rem(10px);
+        margin-top:px2rem(5px);
+    }
+}
+.songlist{
+    width: 100%;
+    flex:1;
+    overflow: auto;
+    padding: 0 px2rem(10px);
+    .songItem{
+        width: 100%;
+        font-size: px2rem(14px);
+        color:rgb(45,45,45);
+        height: px2rem(60px);
+        border-bottom: 1px solid #eee;
+        p{
+            line-height: px2rem(30px);
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+    }
+}

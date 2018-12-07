@@ -1,0 +1,48 @@
+@import '../../../common/css/common.scss';
+:global{
+    .header{
+        width: 100%;
+        height:px2rem(40px);
+        flex-shrink: 0;
+        .search{
+            display: flex;
+            width: 100%;
+            height:100%;
+            justify-content: space-between;
+            align-items: center;
+            background: rgb(59, 59, 59);
+            .icon{
+                width: px2rem(50px);
+                height:100%;
+                text-align: center;
+                .iconfont{
+                    font-size: px2rem(22px);
+                    color:rgba(255, 255, 255, 0.644);
+                    line-height: px2rem(40px);
+                }
+            }
+            .like{
+                flex:1;
+                height:px2rem(30px);
+                background: rgb(131, 131, 131);
+                border-radius: px2rem(15px);
+                text-align: center;
+                line-height: px2rem(30px);
+                color:rgba(255, 255, 255, 0.568);
+            }
+        }
+    }
+    .init{
+        width: 100%;
+        height:px2rem(50px);
+        display: flex;
+        background: rgb(59, 59, 59);
+        flex-shrink: 0;
+        >a{
+            width: 50%;
+            text-align: center;
+            line-height: px2rem(50px);
+            color:rgba(255, 255, 255, 0.685);
+        }
+    }
+}

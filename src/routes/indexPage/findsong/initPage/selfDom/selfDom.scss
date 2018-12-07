@@ -1,0 +1,25 @@
+$baseline-px:37.5px;
+@function px2rem ($px-values) {
+    $baseline-rem: $baseline-px / 1rem * 1;
+    $px-values: $px-values / $baseline-rem;
+    @return $px-values;
+}
+:globel{
+    .bannerImg{
+        width: 100%;
+    }
+    span{
+        color:red;
+    }
+}
+.scroll{
+    flex:1;
+    overflow: auto;
+    margin-bottom: px2rem(60px);
+    box-sizing: content-box;
+}
+.banner{
+    height:100px;
+    background: rgb(59, 59, 59);
+    touch-action: none;
+}

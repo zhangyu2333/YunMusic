@@ -1,0 +1,50 @@
+$baseline-px:37.5px;
+@function px2rem ($px-values) {
+    $baseline-rem: $baseline-px / 1rem * 1;
+    $px-values: $px-values / $baseline-rem;
+    @return $px-values;
+}
+h3{
+    color:#333;
+    line-height: px2rem(30px);
+    font-size: px2rem(15px);
+    font-weight: 600;  
+    padding-left:px2rem(10px);
+    i{
+        line-height: px2rem(30px);
+    }     
+}
+.Recommend{
+    width: 100%;
+    padding:0 px2rem(5px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    
+    .Recommend_item{
+        margin-top: px2rem(10px);
+        width: 33.3333%;
+        padding:0 px2rem(2.5px);
+        position: relative;
+        img{
+            width: 100%;
+            height:auto;
+        }
+        p{
+            color:#333;
+            overflow:hidden; 
+            text-overflow:ellipsis;
+            display:-webkit-box;
+            /* autoprefixer: off */
+            -webkit-box-orient:vertical;
+            /* autoprefixer: on */
+            -webkit-line-clamp:2;
+        }
+        .playCount{
+            position: absolute;
+            top:0;
+            right:5px;
+            color:rgba(255, 255, 255, 0.74);
+        }
+    }
+}

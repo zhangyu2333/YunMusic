@@ -1,0 +1,243 @@
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { formatTime } from '../../utils/formatTime'
+import styles from './player.scss';
+@connect(({...playsong}) =>({...playsong}))
+
+class Player extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            id:"",
+            isPlay:true,
+            stop:false,
+            progress:0,
+            showSongList:false,
+        }
+    }
+    componentDidMount(){
+        let {
+            dispatch
+        } = this.props;
+        this.setState({
+            id:window.localStorage.getItem('songid')
+        },()=>{
+            dispatch({
+                type:"playsong/getSongUrl",
+                payload:this.state.id
+            })
+        }) 
+    }
+    timeUpdate(){
+        let progress = this.refs.audio.currentTime/this.refs.audio.duration*100;
+        this.setState({
+            progress
+        })
+    }
+
+     // 获取总时长
+    get duration(){
+        if (this.refs.audio && this.refs.audio.duration){
+            return formatTime(this.refs.audio.duration);
+        }
+        return '00:00';
+    }
+
+    // 获取当前播放时间
+    get currentTime(){
+        if (this.refs.audio && this.refs.audio.currentTime){
+            return formatTime(this.refs.audio.currentTime);
+        }
+        return '00:00';
+    }
+    changePlay(){
+        this.setState({
+            isPlay:!this.state.isPlay
+        },()=>{
+            this.state.isPlay?this.refs.audio.play():this.refs.audio.pause();
+          })
+    }
+
+      // 触摸进度条事件
+    touchStart(){
+        this.setState({
+            isPlay: false
+        }, ()=>{
+            this.refs.audio.pause();
+        })
+    }
+  // 移动过进度条
+    touchMove(e){
+        // console.log('触摸事件...', e.touches);
+        let touch = e.touches[0],
+            progressEle = this.refs.progress;
+        let progress = (touch.pageX - progressEle.offsetLeft)/progressEle.offsetWidth;
+        if (progress>1){
+            progress = 1;
+        }
+        if (progress<0){
+            progress = 0;
+        }
+        this.setState({
+            progress: progress*100
+        }, ()=>{
+            this.refs.audio.currentTime = progress*this.refs.audio.duration
+        })
+    }
+    // 离开进度条
+    touchEnd(){
+        this.setState({
+            isPlay: true
+        }, ()=>{
+            this.refs.audio.play();
+        })
+    }
+    //改变播放模式
+
+    type(){
+        let {
+            dispatch
+        } = this.props
+        dispatch({
+            type:"playsong/changePlayType"
+        })
+    }
+    renderType(num){
+        switch(num){
+            case 0:
+                return <i className="iconfont">&#xe6d6;</i>
+            case 1:
+                return <i className="iconfont">&#xe669;</i>
+            case 2:
+                return <i className="iconfont">&#xe665;</i>
+            case 3:
+                return <i className="iconfont">&#xe62c;</i>
+            default:
+                return <i className="iconfont">&#xe6d6;</i>
+        }
+    }
+    changeSong(type){
+        let {
+            dispatch,
+            playsong
+        } = this.props;
+        switch(playsong.playType){
+            case 1:
+                let index = Math.floor(Math.random()*playsong.songlist.length)
+                dispatch({
+                    type:"playsong/newSongInfo",
+                    payload:{index}
+                })
+                break;
+            case 3:
+                dispatch({
+                    type:"playsong/newSongInfo",
+                    payload:{index:playsong.songPlayingIndex}
+                })
+                break;
+            default:
+                dispatch({
+                    type:"playsong/newSongInfo",
+                    payload:{type}
+                })
+        }
+    }
+    touchSong(index){
+        let {
+            dispatch
+        } = this.props;
+        dispatch({
+            type:"playsong/newSongInfo",
+            payload:{index}
+        })
+    }
+    render() {
+        let {
+            url,
+            info,
+            playType,
+            songlist,
+            songPlayingIndex
+        } = this.props.playsong
+        return (
+            <div className={styles.play}>
+                <div style={{
+                    backgroundSize:"100% 100%",
+                    backgroundImage:`url(${info.al?info.al.picUrl:""})`,
+                    filter: 'blur(10px) brightness(50%)',
+                }}>
+                </div>
+                {
+                    this.state.showSongList && <div className={styles.songlist} style={{height:this.state.showSongList?'500px':'0',transition: '0.8s'}}>
+                        <div>
+                            <div className={styles.songTitle}>
+                                <span onClick={this.type.bind(this)}>{this.renderType(playType)}</span>
+                                <p>
+                                    {playType===0? "顺序播放":playType===1?"随机播放":playType===2?"列表循环":"单曲循环"}
+                                    ({songlist.length})</p>
+                            </div>
+                            {
+                                songlist.length > 0 && songlist.map((v,i) => {
+                                    return <div key={i} className={styles.songItem} onClick={()=>this.touchSong(i)}>
+                                        <i className="iconfont" style={{color:i===songPlayingIndex? "#f50":""}}>&#xe63d;</i>
+                                        <p>{v.details.name}</p>—<span>{v.details.ar[0].name}</span>
+                                    </div>
+                                })
+                            }
+                            <div className={styles.cancle} onClick={()=>this.setState({showSongList:false})}>关闭</div>
+                        </div>
+                    </div> 
+                }
+                <div className={styles.playPage}>
+                    <div className={styles.header}>
+                        <i className="iconfont">&#xe64d;</i>
+                        <div className={styles.songName}>
+                            <p>{info.name?info.name:""}</p>
+                            <span>{info.ar?info.ar[0].name:""}<i className="iconfont">&#xe912;</i></span>
+                        </div>
+                        <i className="iconfont">&#xe63c;</i>
+                    </div>
+                    <div className={styles.activeImg}>
+                        <img src={info.al?info.al.picUrl:""} alt=""/>
+                    </div>
+                    <div className={styles.send}>
+                        <span><i className="iconfont">&#xe60e;</i></span>
+                        <span><i className="iconfont">&#xe62b;</i></span>
+                        <span><i className="iconfont">&#xe62e;</i></span>
+                        <span><i className="iconfont">&#xe61f;</i></span>
+                        <span><i className="iconfont">&#xe61e;</i></span>
+                    </div>
+                    <div className={styles.playing}>
+                        <span>{this.currentTime}</span>
+                        <div onTouchStart={this.touchStart.bind(this)}
+                             onTouchMove={this.touchMove.bind(this)}
+                             onTouchEnd={this.touchEnd.bind(this)}
+                             ref="progress">
+                            <span style={{left:`${this.state.progress}%`}}>·</span>
+                            <p style={{width:`${this.state.progress}%`}}></p>
+                        </div>
+                        <span>{this.duration}</span>
+                    </div>
+                    <div className={styles.control}>
+                        <span onClick={this.type.bind(this)}>
+                            {this.renderType(playType)}
+                        </span>
+                        <div>
+                            <span onClick={()=>this.changeSong('prev')}><i className="iconfont">&#xe6d4;</i></span>
+                            <p onClick={this.changePlay.bind(this)} >
+                                {
+                                    this.state.isPlay? <i className="iconfont">&#xe627;</i>:<i className="iconfont">&#xe624;</i>
+                                }
+                            </p>
+                            <span onClick={()=>this.changeSong('next')}><i className="iconfont">&#xe6d8;</i></span>
+                        </div>
+                        <span onClick={()=>this.setState({showSongList:true})}><i className="iconfont">&#xe605;</i></span>
+                    </div>
+                </div>
+                <audio src={url} autoPlay ref="audio" onTimeUpdate={()=>this.timeUpdate()}></audio>
+            </div> 
+        );
+    }
+}
+
+export default Player;
