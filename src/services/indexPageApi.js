@@ -34,3 +34,6 @@ export function AllsongUrl(id){
 export function AllsongInfo(id){
   return request(`http://123.206.55.50:14000/song/detail?ids=${id}`)
 }
+export function songLRC(id){
+  return request(`http://123.206.55.50:14000/lyric?id=${id}`)
+}

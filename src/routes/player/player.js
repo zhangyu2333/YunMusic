@@ -13,6 +13,12 @@ class Player extends Component {
             stop:false,
             progress:0,
             showSongList:false,
+            showLRC:false,
+            Lrc:[],
+            height:0,
+            numheight:0,
+            playTime:0,
+            LrcIndex:0,
         }
     }
     componentDidMount(){
@@ -29,9 +35,24 @@ class Player extends Component {
         }) 
     }
     timeUpdate(){
+        let index = this.state.LrcIndex;
         let progress = this.refs.audio.currentTime/this.refs.audio.duration*100;
+        let time = +this.refs.audio.currentTime.toFixed(0)
+        let flag = true;
+        this.state.Lrc.length>0 && this.state.Lrc.map(v=>{
+            
+            if( time==v[0].toFixed(0) ){
+                if(flag){
+                    flag = false;
+                    index++;
+                }
+                
+            }
+        })
         this.setState({
-            progress
+            progress,
+            LrcIndex:index,
+            height:this.state.numheight-index*8.5
         })
     }
 
@@ -68,7 +89,6 @@ class Player extends Component {
     }
   // 移动过进度条
     touchMove(e){
-        // console.log('触摸事件...', e.touches);
         let touch = e.touches[0],
             progressEle = this.refs.progress;
         let progress = (touch.pageX - progressEle.offsetLeft)/progressEle.offsetWidth;
@@ -151,6 +171,44 @@ class Player extends Component {
             payload:{index}
         })
     }
+    componentWillReceiveProps(props){
+        if( props.playsong.LRC !== "" ){
+            let lyric = props.playsong.LRC;
+            let lines = lyric.split('\n');
+            let pattern = /\[\d{2}:\d{2}.\d{2}\]/g;
+            let result = [];
+            while (!pattern.test(lines[0])) {
+                lines = lines.slice(1);
+            }
+            lines[lines.length - 1].length === 0 && lines.pop();
+            for (let data of lines) {
+                let index = data.indexOf(']');
+                let time = data.substring(0, index + 1);
+                let value = data.substring(index + 1);
+                let timeString = time.substring(1, time.length - 2);
+                let timeArr = timeString.split(':');
+                result.push([parseInt(timeArr[0], 10) * 60 + parseFloat(timeArr[1]), value]);
+            }
+            result.sort(function(a, b) {
+                return a[0] - b[0];
+            });
+            this.setState({
+                Lrc:result
+            })
+        }
+        
+    }
+    hideImg(){
+        
+        this.setState({
+            showLRC:true,
+        },() => {
+            this.setState({
+                height:this.refs.scroll.offsetHeight/2,
+                numheight:this.refs.scroll.offsetHeight/2
+            })
+        })
+    }
     render() {
         let {
             url,
@@ -159,6 +217,8 @@ class Player extends Component {
             songlist,
             songPlayingIndex
         } = this.props.playsong
+        // console.log(this.refs.audio&&this.refs.audio.currentTime)
+        console.log(this.state.LrcIndex)
         return (
             <div className={styles.play}>
                 <div style={{
@@ -167,8 +227,8 @@ class Player extends Component {
                     filter: 'blur(10px) brightness(50%)',
                 }}>
                 </div>
-                {
-                    this.state.showSongList && <div className={styles.songlist} style={{height:this.state.showSongList?'500px':'0',transition: '0.8s'}}>
+                
+                    <div className={styles.songlist} style={{height:this.state.showSongList?'500px':'0',transition: '0.8s'}}>
                         <div>
                             <div className={styles.songTitle}>
                                 <span onClick={this.type.bind(this)}>{this.renderType(playType)}</span>
@@ -184,10 +244,13 @@ class Player extends Component {
                                     </div>
                                 })
                             }
-                            <div className={styles.cancle} onClick={()=>this.setState({showSongList:false})}>关闭</div>
+                            {
+                                this.state.showSongList && <div className={styles.cancle} onClick={()=>this.setState({showSongList:false})}>关闭</div>
+                            }
+                            
                         </div>
                     </div> 
-                }
+                
                 <div className={styles.playPage}>
                     <div className={styles.header}>
                         <i className="iconfont">&#xe64d;</i>
@@ -197,16 +260,38 @@ class Player extends Component {
                         </div>
                         <i className="iconfont">&#xe63c;</i>
                     </div>
-                    <div className={styles.activeImg}>
-                        <img src={info.al?info.al.picUrl:""} alt=""/>
+                    <div className={styles.content}>
+                        <div className={styles.activeImg} onClick={this.hideImg.bind(this)} style={{opacity:this.state.showLRC?0:1}}>
+                            <img src={info.al?info.al.picUrl:""} alt=""/>
+                        </div>
+                        {
+                            this.state.showLRC && <div className={styles.lrc} onClick={()=>this.setState({showLRC:false})} style={{width:this.state.showLRC?'100%':"",opacity:this.state.showLRC?1:1}}>
+                                <div className={styles.scroll} ref="scroll">
+                                    <ul style={{top:this.state.height+'px'}}>
+                                        {
+                                            this.state.Lrc.length > 0 && this.state.Lrc.map((v,i) => {
+                                                return <li key={i} style={{color:this.state.LrcIndex==i*-1? 'red':'#fff'}}>
+                                                    {v[1]}
+                                                </li>
+                                            })
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+
+                        }
+                        {
+                            !this.state.showLRC && <div className={styles.send}>
+                                <span><i className="iconfont">&#xe60e;</i></span>
+                                <span><i className="iconfont">&#xe62b;</i></span>
+                                <span><i className="iconfont">&#xe62e;</i></span>
+                                <span><i className="iconfont">&#xe61f;</i></span>
+                                <span><i className="iconfont">&#xe61e;</i></span>
+                        </div>
+                        }
                     </div>
-                    <div className={styles.send}>
-                        <span><i className="iconfont">&#xe60e;</i></span>
-                        <span><i className="iconfont">&#xe62b;</i></span>
-                        <span><i className="iconfont">&#xe62e;</i></span>
-                        <span><i className="iconfont">&#xe61f;</i></span>
-                        <span><i className="iconfont">&#xe61e;</i></span>
-                    </div>
+                    
+                   
                     <div className={styles.playing}>
                         <span>{this.currentTime}</span>
                         <div onTouchStart={this.touchStart.bind(this)}

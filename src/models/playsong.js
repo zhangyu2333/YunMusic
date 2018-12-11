@@ -1,4 +1,4 @@
-import { songUrl,songInfo,AllsongInfo,AllsongUrl } from '../services/indexPageApi';
+import { songUrl,songInfo,AllsongInfo,AllsongUrl,songLRC } from '../services/indexPageApi';
 export default {
 
 	namespace: 'playsong',
@@ -10,6 +10,7 @@ export default {
         playType:0,
         id:'',
         songPlayingIndex:0,
+        LRC:""
     },
 	
 	subscriptions: {
@@ -21,7 +22,7 @@ export default {
             let AllInfo = []
             let url = yield call( songUrl,payload )
             let info = yield call( songInfo,payload )
-            console.log(url)
+            let lrc = yield call( songLRC,payload )
             AllInfo.push({
                 urls:url.data.data[0],
                 details:info.data.songs[0]
@@ -33,6 +34,10 @@ export default {
             yield put({
                 type:"setSongList",
                 payload:AllInfo
+            })
+            yield put({
+                type:"setSongLRC",
+                payload:lrc.data.lrc.lyric
             })
         },
         *getSongListURL({ payload },{ call,put }){
@@ -54,11 +59,11 @@ export default {
         },
         *newSongInfo({ payload },{ call,put,select }){
             let store = yield select(state=>state);
-            console.log(store)
             let urls,
                 index = store.playsong.songPlayingIndex,
                 details = {},
-                songInfo = {};
+                songInfo = {},
+                lrc;
             if( payload.type ){
                 if( payload.type==="prev" ){
                     index--;
@@ -70,10 +75,11 @@ export default {
                     if( index > store.playsong.songlist.length-1){
                         index = store.playsong.songlist.length-1;
                     }
-                }
+                } 
             }else{
                 index = payload.index;
             }
+            lrc = yield call(songLRC,store.playsong.songlist[index].urls.id)
             urls = store.playsong.songlist[index].urls;
             details = store.playsong.songlist[index].details;
             songInfo = {
@@ -87,6 +93,10 @@ export default {
             yield put({
                 type:"setSongPlayingIndex",
                 payload:index
+            })
+            yield put({
+                type:"setSongLRC",
+                payload:lrc.data.lrc.lyric
             })
         }
 	},
@@ -104,6 +114,9 @@ export default {
         },
         setSongPlayingIndex(state,{payload}){
             return {...state,songPlayingIndex:payload}
+        },
+        setSongLRC(state,{payload}){
+            return {...state,LRC:payload}
         }
 	},
 

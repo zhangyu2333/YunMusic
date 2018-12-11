@@ -22,6 +22,7 @@ $color:#333;
         bottom:0;
         z-index: 10;
         padding:0 px2rem(10px);
+        overflow: hidden;
         >div{
             width: 100%;
             overflow: auto;
@@ -111,30 +112,63 @@ $color:#333;
             }
         }
     }
-    .activeImg{
-        width: px2rem(270px);
-        height:px2rem(270px);
-        margin: px2rem(50px) auto;
-        margin-bottom: 0;
-        border-radius: 50%;
-        animation: cr 10s linear infinite;
-        border:10px solid rgba(250, 250, 250, 0.151);
-        >img{
-            box-sizing: border-box;
-            padding:30px;
-            width: 100%;
+    .content{
+        overflow: hidden;
+        position: relative;
+       .activeImg{
+            width: px2rem(270px);
+            height:px2rem(270px);
+            margin: px2rem(50px) auto;
+            margin-bottom: px2rem(150px);
             border-radius: 50%;
+            animation: cr 10s linear infinite;
+            border:10px solid rgba(250, 250, 250, 0.151);
+            transition: opacity 0.5s;
+            >img{
+                box-sizing: border-box;
+                padding:30px;
+                width: 100%;
+                border-radius: 50%;
+                height:100%;
+                background: rgb(45,45,45);
+            }
+        } 
+        .lrc{
+            width: 0%;
+            transition: width opacity 0.1s 0.5s;
+            position: absolute;
+            top:0;
+            left:0;
             height:100%;
-            background: rgb(45,45,45);
+            color:rgba(231, 231, 231, 0.925);
+            padding:px2rem(50px) 0;
+            .scroll{
+                width: 100%;
+                height:100%;
+                position: absolute;
+                top:px2rem(50px);
+                left:0;
+                overflow: hidden;
+                ul{
+                    width: 100%;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    transition: 0.2s;
+                    li{
+                        line-height: 35px;
+                        font-size: 15px;
+                    }
+                }
+            }
         }
     }
+    
     .send{
         padding:0 px2rem(30px);
         display: flex;
         justify-content: space-around;
         color:rgba(255, 255, 255, 0.8);
-        
-        margin-top: px2rem(150px);
         i{
             font-size: px2rem(20px);
         }
@@ -145,6 +179,9 @@ $color:#333;
         justify-content: center;
         align-items: center;
         margin-top: 20px;
+        position: absolute;
+        width: 100%;
+        bottom: 80px;
         >span{
             padding: 0 10px;
             color:rgb(245,245,245);
