@@ -15,7 +15,7 @@ $baseline-px:37.5px;
     @return $px-values;
 }
 
-$color:#333;
+$color:rgb(45,45,45);
 @mixin display($box:flex, $direction:row, $col:flex-start, $row:center) {
     display: $box;
     flex-direction: $direction;

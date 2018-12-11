@@ -46,6 +46,10 @@ class SelfDom extends Component {
         dispatch({
             type:"indexPage/getStationData"
         })
+        dispatch({
+            type:"userinfo/getUser",
+            // payload:window.localStorage.getItem('user')
+        })
     }
     render() {
         let {

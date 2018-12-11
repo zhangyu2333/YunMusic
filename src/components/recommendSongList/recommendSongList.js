@@ -18,7 +18,7 @@ class RecommendSongList extends Component {
                                 return 
                             }
                             return <div key={i} className={styles.Recommend_item}>
-                                <NavLink to="">
+                                <NavLink to={`/IndexPage/SongListDetail/${v.id}`}>
                                     <img src={v.picUrl?v.picUrl:v.song.album.picUrl} alt=""/>
                                     <p>{v.name}</p>
                                     <div className={styles.playCount}>

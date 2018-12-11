@@ -3,7 +3,8 @@ import {
     RecommendSongListData,
     NewSongListData,
     StationData,
-    searchSong
+    searchSong,
+    songlistDetail
 } from '../services/indexPageApi';
 export default {
     namespace:"indexPage",
@@ -13,7 +14,8 @@ export default {
         RecommendSongListData:{},
         NewSongListData:{},
         StationData:{},
-        songs:[]
+        songs:[],
+        songlistDetail:{}
     },
     effects:{
         *getBannerData(_,{ call, put }){
@@ -46,10 +48,17 @@ export default {
         },
         *getSearchSongData({payload},{ call, put }){
             let res = yield call(searchSong,payload);
-            console.log(res.data.result.songs)
             yield put({
                 type:"setSearchSongData",
                 payload:res.data.result.songs
+            })
+        },
+        *getSonglistDetail({payload},{ call, put }){
+            let res = yield call(songlistDetail,payload);
+            console.log(res)
+            yield put({
+                type:"setSonglistDetail",
+                payload:res.data.playlist
             })
         }
     },
@@ -68,6 +77,9 @@ export default {
         },
         setSearchSongData(state,{payload}){
             return {...state,songs:payload}
+        },
+        setSonglistDetail(state,{payload}){
+            return {...state,songlistDetail:payload}
         }
     }
 }

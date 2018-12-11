@@ -9,3 +9,9 @@ export function setCookie(info){
 export function Userlogin(opt) {
     return request(`http://123.206.55.50:14000/login/cellphone?phone=${opt.userPhone}&password=${opt.pwd}`);
 }
+export function UserInfo(id) {
+    return request(`http://123.206.55.50:14000/user/detail?uid=${id}`);
+}
+export function My(){
+    return request(`http://123.206.55.50:14000/user/subcount`)
+}

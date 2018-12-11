@@ -1,0 +1,107 @@
+$baseline-px:37.5px;
+$color:rgb(54, 46, 46);
+@function px2rem ($px-values) {
+    $baseline-rem: $baseline-px / 1rem * 1;
+    $px-values: $px-values / $baseline-rem;
+    @return $px-values;
+}
+.header{
+    width: 100%;
+    height:px2rem(40px);
+    background: $color;
+    text-align: center;
+    position: relative;
+    padding:0 px2rem(15px);
+    color:#fff;
+    font-size: px2rem(18px);
+    line-height: px2rem(40px);
+    font-family: PingFangSC-Regular, sans-serif;
+    i{
+        position: absolute;
+        right: px2rem(15px);
+    }
+}
+.userHead{
+    width: 100%;
+    height:px2rem(100px);
+    padding: px2rem(5px) px2rem(15px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    img{
+        width: px2rem(70px);
+        height:px2rem(70px);
+        border-radius: 50%;
+    }
+    span{
+        padding:0 10px;
+        border:1px solid rgb(211, 211, 211);
+        border-radius: 10px;
+    }
+    .userInfo{
+        color:rgb(139, 138, 138);
+        padding-left: px2rem(15px);
+        p{
+            line-height: px2rem(20px);
+            color:$color;
+            font-size: px2rem(14px);
+        }
+        .lv{
+            padding: 0px 8px ;
+            margin-top: 5px;
+            border-radius: 7px;
+            border:2px solid rgb(184, 184, 184);
+        }
+    }
+    span{
+        position: absolute;
+        top:px2rem(40px);
+        right:px2rem(15px);
+    }
+}
+.sel{
+    display: flex;
+    padding:px2rem(15px) px2rem(15px);
+    border-bottom: 1px solid #eee;
+    li{
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-right: 1px solid #eee;
+        p{
+            color:rgb(196, 196, 196);
+        }
+        i{
+            font-size: px2rem(20px);
+            line-height: px2rem(20px)
+        }
+        &:nth-child(4){
+            border:0
+        }
+    }
+}
+.more{
+    width: 100%;
+    padding-left:px2rem(15px);
+    li{
+        
+        height:px2rem(40px);
+        display: flex;
+        align-items: center;
+        position: relative;
+        border-bottom: 1px solid #eee;
+        justify-content: space-between;
+        span{
+            position: absolute;
+            left:px2rem(35px);
+            top:px2rem(10px);
+            font-size: px2rem(13px);
+        }
+        i{
+            font-size: px2rem(20px);
+            padding-right:px2rem(15px);
+        }
+    }
+}

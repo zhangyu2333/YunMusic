@@ -14,79 +14,63 @@ import {Login} from '../routes/login/login'
 import LoginPage from '../routes/loginPage/loginPage';
 import Search from '../routes/search/search';
 import Player from '../routes/player/player';
+import SongListDetail from '../routes/indexPage/songListDetail/songListDetail';
 export default {
-    routes:[
-        {
+    routes:[{
             path:"/IndexPage",
             component:IndexPage,
-            children:[
-                {
-                    path:'/IndexPage/FindSong',
-                    component:FindSong,
-                    children:[
-                        {
-                            path:"/IndexPage/FindSong/SelfDom",
-                            component:SelfDom,
-                        },
-                        {
-                            path:"/IndexPage/FindSong/Recommend",
-                            component:Recommend,
-                        },
-                        {
-                            path:"/IndexPage/FindSong",
-                            redirect:"/IndexPage/FindSong/SelfDom",
-                        }
-                    ]
-                },
-                {
+            children:[{
+                path:'/IndexPage/FindSong',
+                component:FindSong,
+                children:[{
+                        path:"/IndexPage/FindSong/SelfDom",
+                        component:SelfDom,
+                    },{
+                        path:"/IndexPage/FindSong/Recommend",
+                        component:Recommend,
+                    },{
+                        path:"/IndexPage/FindSong",
+                        redirect:"/IndexPage/FindSong/SelfDom",
+                    }]
+                },{
+                    path:"/IndexPage/SongListDetail/:id",
+                    component:SongListDetail,
+                },{
                     path:'/IndexPage/SongVideo',
                     component:SongVideo,
-                },
-                {
+                },{
                     path:'/IndexPage/My',
                     component:My,
-                },
-                {
+                },{
                     path:'/IndexPage/Friend',
                     component:Friend,
-                },
-                {
+                },{
                     path:'/IndexPage/Mine',
                     component:Mine,
-                },
-                {
+                },{
                     path:'/IndexPage',
                     redirect: '/IndexPage/FindSong'
-                }
-            ]
-        },
-        {
-            path:"/detail",
-            component:IndexPage
-        },
-        {
-            path:"/play",
-            component:IndexPage
-        },
-        {
-            path:"/login",
-            component:Login
-        },
-        {
-            path:"/userlogin",
-            component:LoginPage
-        },
-        {
-            path:"/search",
-            component:Search
-        },
-        {
-            path:"/player",
-            component:Player
-        },
-        {
-            path:"/",
-            redirect: '/IndexPage'
-        }
-    ]
+                }]
+            },{
+                path:"/detail",
+                component:IndexPage
+            },{
+                path:"/play",
+                component:IndexPage
+            },{
+                path:"/login",
+                component:Login
+            },{
+                path:"/userlogin",
+                component:LoginPage
+            },{
+                path:"/search",
+                component:Search
+            },{
+                path:"/player",
+                component:Player
+            },{
+                path:"/",
+                redirect: '/IndexPage'
+            }]
 }
