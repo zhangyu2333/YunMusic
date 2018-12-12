@@ -25,12 +25,13 @@ class Player extends Component {
         let {
             dispatch
         } = this.props;
+        console.log(this.props)
         this.setState({
             id:window.localStorage.getItem('songid')
         },()=>{
             dispatch({
                 type:"playsong/getSongUrl",
-                payload:this.state.id
+                payload:{id:this.state.id,flag:this.props.location.state?this.props.location.state.flag:null}
             })
         }) 
     }
@@ -217,8 +218,6 @@ class Player extends Component {
             songlist,
             songPlayingIndex
         } = this.props.playsong
-        // console.log(this.refs.audio&&this.refs.audio.currentTime)
-        console.log(this.state.LrcIndex)
         return (
             <div className={styles.play}>
                 <div style={{
@@ -237,7 +236,7 @@ class Player extends Component {
                                     ({songlist.length})</p>
                             </div>
                             {
-                                songlist.length > 0 && songlist.map((v,i) => {
+                                songlist && songlist.map((v,i) => {
                                     return <div key={i} className={styles.songItem} onClick={()=>this.touchSong(i)}>
                                         <i className="iconfont" style={{color:i===songPlayingIndex? "#f50":""}}>&#xe63d;</i>
                                         <p>{v.details.name}</p>—<span>{v.details.ar[0].name}</span>
@@ -253,7 +252,7 @@ class Player extends Component {
                 
                 <div className={styles.playPage}>
                     <div className={styles.header}>
-                        <i className="iconfont">&#xe64d;</i>
+                        <i className="iconfont" onClick={this.props.history.goBack}>&#xe64d;</i>
                         <div className={styles.songName}>
                             <p>{info.name?info.name:""}</p>
                             <span>{info.ar?info.ar[0].name:""}<i className="iconfont">&#xe912;</i></span>

@@ -20,9 +20,11 @@ export default {
 	effects: {
 		*getSongUrl({ payload },{ call, put }) {
             let AllInfo = []
-            let url = yield call( songUrl,payload )
-            let info = yield call( songInfo,payload )
-            let lrc = yield call( songLRC,payload )
+            let list = JSON.parse(window.localStorage.getItem('songlist'))
+            let url = yield call( songUrl,payload.id )
+            let info = yield call( songInfo,payload.id )
+            let lrc = yield call( songLRC,payload.id )
+            console.log(list)
             AllInfo.push({
                 urls:url.data.data[0],
                 details:info.data.songs[0]
@@ -31,10 +33,13 @@ export default {
                 type:"setUrl",
                 payload:AllInfo[0]
             })
-            yield put({
-                type:"setSongList",
-                payload:AllInfo
-            })
+            if( payload.flag ){
+                yield put({
+                    type:"setSongList",
+                    payload:AllInfo
+                })
+            }
+            
             yield put({
                 type:"setSongLRC",
                 payload:lrc.data.lrc.lyric
@@ -51,7 +56,7 @@ export default {
                     details:All_info.data.songs.filter(val=>v.id===val.id)[0]
                 })
             })
-            console.log(songList)
+            window.localStorage.setItem('songlist',JSON.stringify(songList))
             yield put({
                 type:"setSongList",
                 payload:songList
@@ -110,6 +115,7 @@ export default {
             return {...state,playType:(state.playType+=1)%4}
         },
         setSongList(state,{payload}){
+            console.log(payload)
             return {...state,songlist:payload}
         },
         setSongPlayingIndex(state,{payload}){

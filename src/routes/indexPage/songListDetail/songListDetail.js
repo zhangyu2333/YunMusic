@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import styles from './songListDetail.scss';
 
 @connect((...indexPage)=>({...indexPage}))
@@ -18,6 +19,35 @@ class SongListDetail extends Component {
             payload:id
         })
     }
+    playAll(idArr){
+        let urlArr = idArr.map((v) => {
+            return v.id
+        })
+        window.localStorage.setItem('songid',urlArr[0])
+        let {
+            dispatch,
+        } = this.props;
+        dispatch({
+            type:"playsong/getSongListURL",
+            payload:urlArr
+        })
+        this.props.history.push({
+            pathname:'/player'
+        })
+        
+    }
+    goPlay(id){
+        window.localStorage.setItem('songid',id)
+        let {
+            history:{
+                push
+            }
+        } = this.props;
+        push({
+            pathname:"/player",
+            state:{id:id,flag:true}
+        })
+    }
     render() {
         let {
             songlistDetail
@@ -30,7 +60,7 @@ class SongListDetail extends Component {
                 </div>
                 <div className={styles.realtitle}>
                     <header className={styles.header}>
-                        <div>
+                        <div onClick={this.props.history.goBack}>
                             <i className="iconfont">&#xe64d;</i>
                         </div>
                         
@@ -52,22 +82,28 @@ class SongListDetail extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className={styles.songlist}>
-                    <div className={styles.songlist_title}>
-                        <p><i className="iconfont">&#xe624;</i>播放全部</p>
-                        <div className={styles.buy}>收藏</div>
+                    <div className={styles.songlist}>
+                        <div className={styles.songlist_title}>
+                            <p onClick={() =>this.playAll(songlistDetail.trackIds)}><i className="iconfont">&#xe624;</i>播放全部</p>
+                            <div className={styles.buy}>+收藏({(songlistDetail.subscribedCount/10000).toFixed(1)}万)</div>
+                        </div>
+                        <ul>
+                            {
+                                songlistDetail.tracks && songlistDetail.tracks.map((v,i) => {
+                                    return <li key={i} onClick={() =>this.goPlay(v.id)}>
+                                        <span>{++i}</span>
+                                        <div>
+                                            <h5>{v.name}</h5>
+                                            <p>{v.ar[0].name}-{v.al.name}</p>
+                                        </div>
+                                        <i className="iconfont">&#xe61e;</i>
+                                    </li>
+                                })
+                            }
+                        </ul>
                     </div>
-                    <ul>
-                        {
-                            songlistDetail.tracks && songlistDetail.tracks.map((v,i) => {
-                                return <li key={i}>
-                                    <span>{++i}</span><p>{v.name}</p>
-                                </li>
-                            })
-                        }
-                    </ul>
                 </div>
+                
             </div>
         );
     }

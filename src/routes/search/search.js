@@ -45,7 +45,7 @@ class Search extends Component {
         } = this.props;
         push({
             pathname:"/player",
-            state:id
+            state:{id:id,flag:true}
         })
         window.localStorage.setItem('songid',id);
     }

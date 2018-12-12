@@ -6,7 +6,7 @@ $baseline-px:37.5px;
     @return $px-values;
 }
 
-$color:rgb(45,45,45);
+$color:rgb(51, 45, 45);
 .detail{
     width: 100%;
     height:100%;
@@ -21,7 +21,7 @@ $color:rgb(45,45,45);
         width: 100%;
         height:100%;
         // background: rgba(17, 17, 17, 0.726);
-        filter:blur(10px);
+        filter:blur(10px) brightness(70%);
         background-size: 100%;
         background-repeat: no-repeat;
     }
@@ -34,6 +34,8 @@ $color:rgb(45,45,45);
     width: 100%;
     height:100%;
     padding-bottom: px2rem(60px);
+    display: flex;
+    flex-direction: column;
 }
 .header{
     width: 100%;
@@ -41,6 +43,7 @@ $color:rgb(45,45,45);
     display: flex;
     justify-content: space-between;
     color:#fff;
+    flex-shrink: 0;
     div{
         flex-basis:px2rem(50px);
         display: flex;
@@ -58,6 +61,7 @@ $color:rgb(45,45,45);
     padding:0 px2rem(15px);
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     .imgurl{
         width: px2rem(170px);
         img{
@@ -90,10 +94,74 @@ $color:rgb(45,45,45);
     }
 }
 .songlist{
-    ul{
-        li{
-            height:px2rem(40px);
+    width: 100%;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    overflow: hidden;
+    .songlist_title{
+        width: 100%;
+        display: flex;
+        height:px2rem(40px);
+        align-items: center;
+        justify-content: space-between;
+        padding-left:px2rem(15px);
+        flex-shrink: 0;
+        div{
+            padding:0 px2rem(10px);
+            height:100%;
+            line-height: px2rem(40px);
+            background: $color;
+            color:#fff;
+            padding:0 px2rem(15px);
+            border-top-right-radius: 15px;
+            
+        }
+        p{
+            line-height: px2rem(40px);
+            font-size: px2rem(14px);
             display: flex;
+            align-items: center;
+            i{
+                font-size: px2rem(22px);
+                padding-right:px2rem(5px);
+            }
+        }
+    }
+    ul{
+        padding-left: px2rem(50px);
+        flex:1;
+        overflow: auto;
+        li{
+            border-top: 1px solid #eee;
+            height:px2rem(50px);
+            padding-right: px2rem(15px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            div{
+                h5{
+                    font-size: px2rem(14px);
+                }
+                p{
+                    color:rgb(179, 179, 179);
+                }
+            }
+            span{
+                position: absolute;
+                top:0;
+                left:px2rem(-50px);
+                width: px2rem(50px);
+                height:px2rem(50px);
+                text-align: center;
+                line-height: px2rem(50px);
+                font-size: px2rem(16px);
+                color:rgb(179, 179, 179);
+            }
         }
     }
 }
