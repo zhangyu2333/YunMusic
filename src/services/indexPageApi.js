@@ -1,42 +1,42 @@
 import request from '../utils/request';
-
+const host = /localhost/.test(window.location.host)?'http://123.206.55.50:14000':'http://123.206.55.50:14000';
 export function banner() {
-  return request('http://123.206.55.50:14000/banner');
+  return request(`${host}/banner`);
 }
 export function RecommendSongListData(){
-  return request('http://123.206.55.50:14000/personalized');
+  return request(`${host}/personalized`);
 }
 export function NewSongListData(){
-  return request('http://123.206.55.50:14000/personalized/newsong')
+  return request(`${host}/personalized/newsong`)
 }
 export function StationData(){
-  return request('http://123.206.55.50:14000/personalized/djprogram')
+  return request(`${host}/personalized/djprogram`)
 }
 export function hotSearch(){
-  return request('http://123.206.55.50:14000/search/hot')
+  return request(`${host}/search/hot`)
 }
 export function searchSong(val){
-  return request(`http://123.206.55.50:14000/search?keywords=${val}`)
+  return request(`${host}/search?keywords=${val}`)
 }
 
 
 export function songUrl(id){
-  return request(`http://123.206.55.50:14000/song/url?id=${id}`)
+  return request(`${host}/song/url?id=${id}`)
 }
 export function songInfo(id){
-  return request(`http://123.206.55.50:14000/song/detail?ids=${id}`)
+  return request(`${host}/song/detail?ids=${id}`)
 }
 
 
 export function AllsongUrl(id){
-  return request(`http://123.206.55.50:14000/song/url?id=${id}`)
+  return request(`${host}/song/url?id=${id}`)
 }
 export function AllsongInfo(id){
-  return request(`http://123.206.55.50:14000/song/detail?ids=${id}`)
+  return request(`${host}/song/detail?ids=${id}`)
 }
 export function songLRC(id){
-  return request(`http://123.206.55.50:14000/lyric?id=${id}`)
+  return request(`${host}/lyric?id=${id}`)
 }
 export function songlistDetail(id){
-  return request(`http://123.206.55.50:14000/playlist/detail?id=${id}`)
+  return request(`${host}/playlist/detail?id=${id}`)
 }
