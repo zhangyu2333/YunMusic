@@ -5,9 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dva Demo</title>
   <link rel="stylesheet" href="./index.css" />
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script src="https://browser.sentry-cdn.com/4.4.1/bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+    eruda.init();
+    Sentry.init({ dsn: 'https://9a41d28989554c368c2ade2157cb5bf1@sentry.io/1352770' });
+  </script>
+  <script>
+    var _hmt = _hmt || [];
+    window._hmt = _hmt;
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?871c2fa49aa90de71dcdf45e32202415";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
 </head>
 <body>
-
+  
   <div id="root"></div>
   <script src="./index.js"></script>
 

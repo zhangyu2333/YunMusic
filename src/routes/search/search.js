@@ -28,6 +28,7 @@ class Search extends Component {
             if( this.state.iptVal==="" ){
                 return
             }
+            window._hmt.push(["_trackEven","网易云音乐","搜素"])
             dispatch({
                 type:"indexPage/getSearchSongData",
                 payload:this.state.iptVal

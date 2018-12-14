@@ -34,7 +34,7 @@ class FindSong extends Component {
                     </div>
                 </header>
                 <div className="init">
-                    <NavLink to="/IndexPage/FindSong/SelfDom">个性推荐</NavLink>
+                    <NavLink to="/IndexPage/FindSong/SelfDom" onClick={() =>window._hmt.push(["_trackEven","网易云音乐","推荐"])}>个性推荐</NavLink>
                     <NavLink to="/IndexPage/FindSong/Recommend">主播电台</NavLink>
                 </div>
                 <RouterView routes={this.props.routes}></RouterView>
