@@ -26,7 +26,7 @@ class FindSong extends Component {
                             <i className="iconfont">&#xe615;</i>
                         </div>
                         <div className="like">
-                            猜你喜欢 浮生
+                            猜你喜欢 张宇
                         </div>
                         <div className="icon">
                             <i className="iconfont">&#xe664;</i>
